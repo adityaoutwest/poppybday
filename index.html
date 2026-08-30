@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Poppy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14121b;
+    --bg-alt: #1a1723;
+    --panel: #201c2b;
+    --line: rgba(244,238,225,0.09);
+    --gold: #e8b04b;
+    --ember: #e2724a;
+    --cream: #f4eee1;
+    --muted: #948fa0;
+    --wax-drip: #3a3348;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'DM Sans', sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  ::selection{ background:var(--gold); color:#14121b; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    padding:32px;
+    background:
+      radial-gradient(ellipse 700px 500px at 50% 15%, rgba(232,176,75,0.14), transparent 70%),
+      radial-gradient(ellipse 900px 600px at 80% 90%, rgba(226,114,74,0.08), transparent 70%),
+      var(--bg);
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:28px;
+  }
+  .hero h1{
+    font-family:'DM Serif Display', serif;
+    font-weight:500;
+    font-size:clamp(42px, 8vw, 96px);
+    line-height:1.03;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold);
+  }
+  .hero p{
+    margin-top:26px;
+    color:var(--muted);
+    font-size:17px;
+    max-width:42ch;
+    line-height:1.6;
+  }
+  .hero .years{
+    margin-top:6px;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--cream);
+    font-size:15px;
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom:40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+  }
+  .scroll-cue svg{ animation: bob 2s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(8px); } }
+
+  /* ---------- TIMELINE SECTION ---------- */
+  .timeline-section{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:80px;
+  }
+
+  /* sticky candle panel */
+  .candle-panel{
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:28px;
+  }
+  .candle-rig{
+    display:flex;
+    align-items:flex-end;
+    gap:6px;
+    height:120px;
+  }
+  .flame{
+    width:14px;
+    height:26px;
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:linear-gradient(180deg, #fff7d6 0%, var(--gold) 45%, var(--ember) 100%);
+    filter: blur(0.2px) drop-shadow(0 0 10px rgba(232,176,75,0.75));
+    animation: flicker 2.4s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes flicker{
+    0%,100%{ transform:scale(1) rotate(0deg); }
+    25%{ transform:scale(1.05,0.96) rotate(-2deg); }
+    50%{ transform:scale(0.95,1.05) rotate(1deg); }
+    75%{ transform:scale(1.03,0.98) rotate(2deg); }
+  }
+  .wick{
+    width:4px; height:14px; background:#2a2434; margin:0 auto;
+  }
+  .candle-body{
+    width:14px;
+    height:70px;
+    background:linear-gradient(180deg, #f6ede0, #e8d9bd);
+    border-radius:2px;
+    position:relative;
+    box-shadow: inset -3px 0 6px rgba(0,0,0,0.15);
+  }
+  .candle-body::before{
+    content:'';
+    position:absolute; top:6px; left:0; right:0;
+    height:2px; background:var(--ember); opacity:0.35;
+  }
+
+  .age-counter{
+    font-family:'DM Serif Display', serif;
+    font-weight:500;
+    font-size:96px;
+    line-height:0.9;
+    color:var(--cream);
+    font-variant-numeric: tabular-nums;
+  }
+  .age-counter span{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:14px;
+    font-weight:400;
+  }
+
+  .progress-track{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:8px;
+  }
+  .progress-dot-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    opacity:0.4;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .progress-dot-row.active{ opacity:1; transform:translateX(4px); }
+  .progress-dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--muted);
+    transition:background 0.4s ease, box-shadow 0.4s ease;
+  }
+  .progress-dot-row.active .progress-dot{
+    background:var(--gold);
+    box-shadow:0 0 8px rgba(232,176,75,0.7);
+  }
+  .progress-dot-row .yr{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .progress-dot-row.active .yr{ color:var(--cream); }
+
+  /* entries */
+  .entries{
+    display:flex;
+    flex-direction:column;
+    gap:26vh;
+    padding:50vh 0;
+  }
+  .entry{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:44px;
+    align-items:center;
+    opacity:0.18;
+    transform:translateY(18px) scale(0.98);
+    filter:blur(1.5px);
+    transition:opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1), filter 0.7s ease;
+  }
+  .entry.is-active{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+  }
+  .entry .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.14em;
+    color:var(--gold);
+  }
+  .entry h2{
+    font-family:'DM Serif Display', serif;
+    font-weight:500;
+    font-size:clamp(26px, 3vw, 34px);
+    margin-top:10px;
+    line-height:1.15;
+  }
+  .entry p.story{
+    margin-top:16px;
+    color:var(--muted);
+    line-height:1.7;
+    font-size:15.5px;
+    max-width:44ch;
+  }
+
+  .entry:nth-child(even){ direction:rtl; }
+  .entry:nth-child(even) > *{ direction:ltr; }
+
+  /* ---------- POLAROID STACK: two spaced-out, slanted photos per section ---------- */
+  .polaroid-stack{
+    position:relative;
+    width:100%;
+    max-width:400px;
+    padding:6px 6px 24px;
+  }
+  .polaroid{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 12px 18px;
+    box-shadow:0 24px 50px -18px rgba(0,0,0,0.6);
+  }
+  .polaroid-stack .polaroid.back{
+    position:absolute;
+    top:0;
+    left:0;
+    width:58%;
+    transform:rotate(-8deg);
+    z-index:1;
+  }
+  .polaroid-stack .polaroid.front{
+    position:relative;
+    width:58%;
+    margin:120px 0 0 auto;
+    transform:rotate(6deg);
+    z-index:2;
+  }
+  .entry:nth-child(even) .polaroid-stack .polaroid.back{
+    left:auto; right:0;
+    transform:rotate(8deg);
+  }
+  .entry:nth-child(even) .polaroid-stack .polaroid.front{
+    margin:120px auto 0 0;
+    transform:rotate(-6deg);
+  }
+
+  .photo-frame{
+    aspect-ratio:4/5;
+    width:100%;
+    border-radius:3px;
+    overflow:hidden;
+    border:1.5px dashed rgba(244,238,225,0.22);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(232,176,75,0.10), transparent 55%),
+      var(--bg-alt);
+  }
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+    border:0;
+  }
+  .polaroid .cap{
+    margin-top:10px;
+    font-family:'DM Serif Display', serif;
+    font-style:italic;
+    font-size:12.5px;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  /* ---------- FINALE ---------- */
+  .finale{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:60px 32px;
+    background:
+      radial-gradient(ellipse 800px 600px at 50% 40%, rgba(232,176,75,0.16), transparent 70%),
+      var(--bg);
+    overflow:hidden;
+  }
+  .confetti{ position:absolute; inset:0; pointer-events:none; }
+  .confetti i{
+    position:absolute;
+    width:7px; height:12px;
+    border-radius:2px;
+    opacity:0;
+    animation: drop 3.4s ease-in infinite;
+  }
+  @keyframes drop{
+    0%{ opacity:0; transform:translateY(-40px) rotate(0deg); }
+    10%{ opacity:1; }
+    100%{ opacity:0; transform:translateY(70vh) rotate(360deg); }
+  }
+  .finale-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:#dea43d;
+    margin-bottom:22px;
+    opacity:0.7;
+    transform:translateY(10px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .finale h2{
+    font-family:'DM Serif Display', serif;
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(44px, 9vw, 108px);
+    color:var(--gold);
+    line-height:1;
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .finale p{
+    margin-top:26px;
+    max-width:48ch;
+    color:#d1cddb;
+    line-height:1.7;
+    font-size:16.5px;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1s ease 0.2s, transform 1s ease 0.2s;
+  }
+  .finale.is-visible .finale-eyebrow,
+  .finale.is-visible h2,
+  .finale.is-visible p{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .finale.is-visible .finale-eyebrow{ opacity:0.9; }
+  .signoff{
+    margin-top:44px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    color:#fff;
+    opacity:0;
+    transition:opacity 1s ease 0.4s;
+  }
+  .finale.is-visible .signoff{ opacity:0.75; }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 860px){
+    .timeline-section{ grid-template-columns:1fr; gap:0; padding:0 20px; }
+    .candle-panel{
+      position:relative;
+      height:auto;
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      padding:40px 0;
+      top:auto;
+    }
+    .candle-rig{ height:80px; }
+    .age-counter{ font-size:56px; }
+    .progress-track{ display:none; }
+    .entries{ gap:14vh; padding:6vh 0 20vh; }
+    .entry, .entry:nth-child(even){
+      grid-template-columns:1fr;
+      direction:ltr;
+      text-align:left;
+    }
+    .polaroid-stack{ max-width:280px; margin:0 auto; }
+    .polaroid-stack .polaroid.front{ margin-top:90px; }
+    .entry:nth-child(even) .polaroid-stack .polaroid.back{ right:0; left:auto; transform:rotate(8deg); }
+    .entry:nth-child(even) .polaroid-stack .polaroid.front{transform:rotate(-6deg); }
+    .entry p.story{ max-width:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-eyebrow">A birthday scrapbook</div>
+  <h1>So many years,<br><em style="font-size:35px"> so many memories.</em></h1>
+  <p style="color:#d1cddb">From the little moments i probably forgot about, to the ones i will never forget.</p><br><br>
+  <div class="years">2008 - 2026</div>
+  <div class="scroll-cue">
+    Keep scrolling
+    <svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M8 1V18M8 18L1 11M8 18L15 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</section>
+
+<!-- ===== TIMELINE ===== -->
+<section class="timeline-section">
+  <div class="candle-panel">
+    <div class="candle-rig" id="candleRig">
+      <!-- flames rendered by JS to match active year count, min 1 -->
+    </div>
+    <div class="age-counter" id="ageCounter">01
+      <span id="ageLabel">The year I was born</span>
+    </div>
+    <div class="progress-track" id="progressTrack"></div>
+  </div>
+
+  <!-- ===== ENTRIES — each hardcoded, each with its own 2-photo polaroid stack ===== -->
+  <div class="entries" id="entries">
+
+    <div class="entry" data-index="0">
+      <div>
+        <div class="eyebrow">2008</div>
+        <h2>When it all started</h2>
+        <p class="story">The day when I was born and you became a dad.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543604348414861312/bf448853-3e31-46d7-99d8-3423bbce9f21.png?ex=6a957913&is=6a942793&hm=42c8b8ad23d3e4b341eedc411d97e875d9fcbf7507e155531d89604b59201110&=&format=webp&quality=lossless&width=1280&height=721" alt="Dad & me, 2008 — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614133130494053/bed59df0-1fa8-4345-a0e9-50791924e843.png?ex=6a958230&is=6a9430b0&hm=4654f063b3ec26427eca47c4db0b06431424df2427ad38dc4f051fbea677ae87&=&format=webp&quality=lossless&width=576&height=1024" alt="Dad & me, 2008 — photo 2"></div>
+          <div class="cap">Dad & me</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-index="1">
+      <div>
+        <div class="eyebrow">2012</div>
+        <h2>Sports lessons</h2>
+        <p class="story">I literally know how to swim and ride a cycle because of you. You are also the reason I picked up a badminton racket for the first time. Every weekend was some sport or the other with you. Never did it ever feel like you were teaching me, it just felt like we were having fun.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614259454415009/facd7ddb-dbff-497b-903a-098b5a0f0b85.png?ex=6a95824e&is=6a9430ce&hm=7f80272cf91f623fab2fe1bad7132094ba40f1b32fad4ddeecea9c98912d5bfc&=&format=webp&quality=lossless&width=768&height=431" alt="Learning to ride, 2010 — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614283504685076/d69f5807-107a-44f6-a69e-f039eb4e46c8.png?ex=6a958254&is=6a9430d4&hm=8053b810f23140443061e9563a8b92072a082421aa0a34ffc722d839d6ad214c&=&format=webp&quality=lossless&width=1280&height=721" alt="Learning to ride, 2010 — photo 2"></div>
+          <div class="cap">Having fun</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-index="2">
+      <div>
+        <div class="eyebrow">2015</div>
+        <h2>Feeding my curiosity</h2>
+        <p class="story">I used to ask so many questions and you actually answered all of them, including the weird ones. You made maths and science feel less like torture and more like something interesting. You are why I was so fascinated with physics in the first place.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614304647909396/479bf789-93e0-4c82-9c12-43345919c328.png?ex=6a958259&is=6a9430d9&hm=3f35acee491ff6d06ce762470cb49459760a0849a75719cea74bc901c0d0556a&=&format=webp&quality=lossless&width=1280&height=721" alt="Birthday pancakes, 2006 — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614337439113327/image.png?ex=6a958261&is=6a9430e1&hm=a9c17815faa177ee9efcf8f2ee9b2d43db300ffbdcf1b63fcda9774efcc2f64f&=&format=webp&quality=lossless" alt="Birthday pancakes, 2006 — photo 2"></div>
+          <div class="cap">Birthdays & festivals</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-index="3">
+      <div>
+        <div class="eyebrow">2020</div>
+        <h2>Coolest dad ever</h2>
+        <p class="story">You always had good taste in clothes, always wanted to click pics wherever we went and our boys day outs were the best part of growing up for me. Miss those days.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614366195257355/103711c6-0c67-4a96-8984-96e7e1aa85a6.png?ex=6a958267&is=6a9430e7&hm=f0bdedc256a4230ed4175f71df458f5f01ec372848017d8b6845601e800c47fa&=&format=webp&quality=lossless&width=1280&height=721" alt="Surprise visit, 2013 — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614393353506877/5dc34fbc-c4f6-4051-aead-159f5286d204.png?ex=6a95826e&is=6a9430ee&hm=2d71b372c9e108ee2c0afff546c2f45359767aef98fca055d67525660ac826cd&=&format=webp&quality=lossless&width=781&height=1024" alt="Surprise visit, 2013 — photo 2"></div>
+          <div class="cap">Coolest dad</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-index="4">
+      <div>
+        <div class="eyebrow">2024</div>
+        <h2>Trying to make you proud</h2>
+        <p class="story">I try to work hard just to try and make you proud one day. You have set the bar high without even trying to and I aspire to reach that level. Sorry for the times I have disappointed you.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614437842485308/eed4579f-8c3d-416a-b7a2-8d7687aa03cd.png?ex=6a958278&is=6a9430f8&hm=4fbad13b4893403a7d1171b6748770cff6591c0e26811a6680037e3b876af4b8&=&format=webp&quality=lossless&width=774&height=1024" alt="Dad's surprise party, 2019 — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614578460463114/1e6b8a59-0a24-451f-b3b7-4c7b84137b74.png?ex=6a95829a&is=6a94311a&hm=3f5a1415eae0794ccbeede5ed831e71e8579d89ebc665b9f8c43faa178ed7a15&=&format=webp&quality=lossless&width=843&height=1024" alt="Dad's surprise party, 2019 — photo 2"></div>
+          <div class="cap">Hanging out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-index="5">
+      <div>
+        <div class="eyebrow">2026</div>
+        <h2>Right now</h2>
+        <p class="story">Different years, same two people, still finding reasons to celebrate. I have moved into college and I miss you a lot. Looking forward to meeting you.</p>
+      </div>
+      <div class="polaroid-stack">
+        <div class="polaroid back">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614588283789402/677573b5-deb9-4a43-b712-93eb8f53236a.png?ex=6a95829c&is=6a94311c&hm=bd3ad9753fc51e7a482ca404640ed7f06653993eff57422b2a75020dc47539dc&=&format=webp&quality=lossless&width=768&height=1024" alt="Today — photo 1"></div>
+        </div>
+        <div class="polaroid front">
+          <div class="photo-frame"><img src="https://media.discordapp.net/attachments/1543604291372191765/1543614584064184491/b1b6f4de-dc77-447f-a188-7175cd9d1b83.png?ex=6a95829b&is=6a94311b&hm=f01b8c0bbb974b5f203e897acdfba0d9a400bc604a75229e0bf39ba683955918&=&format=webp&quality=lossless&width=383&height=512" alt="Today — photo 2"></div>
+          <div class="cap">Now</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FINALE ===== -->
+<section class="finale" id="finale">
+  <div class="confetti" id="confetti"></div>
+  <div class="finale-eyebrow">To the man who has always been there</div>
+  <h2>Happy Birthday<br>Poppy</h2>
+  <p>Thank you for every moment we have already shared and every one still to come. Sorry for the times I have let you down and disappointed you. Love you a lot and I promise to give my best and make you proud. ❤️
+</p>
+  <div class="signoff">- with love, adi</div>
+</section>
+
+<script>
+  // ---------------------------------------------------------------
+  // Age/year metadata for the sticky counter + candle flames.
+  // Must stay in the same order as the .entry sections above
+  // (matched by data-index). Edit ages/years here if you change
+  // them in the HTML above.
+  // ---------------------------------------------------------------
+  const DATA = [
+    { year: "2008", age: 1,  title: "When it all started" },
+    { year: "2012", age: 2,  title: "Sports lessons" },
+    { year: "2015", age: 3, title: "Feeding my curiosity" },
+    { year: "2020", age: 4, title: "Coolest dad ever" },
+    { year: "2024", age: 5, title: "Trying to make you proud" },
+    { year: "2026", age: 6, title: "Right now" },
+  ];
+
+  const progressEl = document.getElementById('progressTrack');
+
+  DATA.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'progress-dot-row';
+    row.dataset.index = i;
+    row.innerHTML = `<span class="progress-dot"></span><span class="yr">${d.year}</span>`;
+    progressEl.appendChild(row);
+  });
+
+  const ageCounter = document.getElementById('ageCounter');
+  const ageLabel = document.getElementById('ageLabel');
+  const candleRig = document.getElementById('candleRig');
+
+  function renderCandles(age){
+    // cap visible flames for layout sanity, show a proportional cluster
+    const count = Math.max(1, Math.min(7, Math.round(age / 5) + 1));
+    candleRig.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const c = document.createElement('div');
+      c.style.display = 'flex';
+      c.style.flexDirection = 'column';
+      c.style.alignItems = 'center';
+      c.innerHTML = `<div class="flame" style="animation-delay:${(i*0.3).toFixed(1)}s"></div><div class="wick"></div><div class="candle-body"></div>`;
+      candleRig.appendChild(c);
+    }
+  }
+
+  function setActive(i){
+    ageCounter.childNodes[0].textContent = String(DATA[i].age).padStart(2,'0');
+    ageLabel.textContent = DATA[i].title;
+    renderCandles(DATA[i].age);
+    document.querySelectorAll('.progress-dot-row').forEach(r => {
+      r.classList.toggle('active', Number(r.dataset.index) === i);
+    });
+    document.querySelectorAll('.entry').forEach(e => {
+      e.classList.toggle('is-active', Number(e.dataset.index) === i);
+    });
+  }
+
+  renderCandles(DATA[0].age);
+  setActive(0);
+
+  const observer = new IntersectionObserver((items) => {
+    items.forEach(item => {
+      if(item.isIntersecting){
+        setActive(Number(item.target.dataset.index));
+      }
+    });
+  }, { root:null, threshold:0.55 });
+
+  document.querySelectorAll('.entry').forEach(e => observer.observe(e));
+
+  // finale reveal
+  const finale = document.getElementById('finale');
+  const finaleObserver = new IntersectionObserver((items) => {
+    items.forEach(item => {
+      if(item.isIntersecting) finale.classList.add('is-visible');
+    });
+  }, { threshold:0.4 });
+  finaleObserver.observe(finale);
+
+  // confetti
+  const confettiColors = ['#e8b04b', '#e2724a', '#f4eee1', '#8f7fd9'];
+  const confettiWrap = document.getElementById('confetti');
+  for(let i=0;i<26;i++){
+    const s = document.createElement('i');
+    s.style.left = Math.random()*100 + '%';
+    s.style.background = confettiColors[i % confettiColors.length];
+    s.style.animationDelay = (Math.random()*3.4).toFixed(2) + 's';
+    s.style.animationDuration = (2.6 + Math.random()*1.6).toFixed(2) + 's';
+    confettiWrap.appendChild(s);
+  }
+</script>
+</body>
+</html>
